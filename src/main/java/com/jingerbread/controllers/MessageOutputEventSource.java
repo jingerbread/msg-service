@@ -6,13 +6,13 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-@EnableBinding(CustomSource.class)
+@EnableBinding(MessageSource.class)
 public class CustomOutputEventSource {
 
     @Autowired
-    private CustomSource customSource;
+    private MessageSource messageSource;
 
     public void sendMessage(String message) {
-        customSource.output().send(MessageBuilder.withPayload(message).build());
+        messageSource.output().send(MessageBuilder.withPayload(message).build());
     }
 }
