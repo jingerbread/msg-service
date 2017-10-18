@@ -17,7 +17,4 @@ public class MessageOutputEventSource {
         messageSource.output().send(MessageBuilder.withPayload(message).build());
     }
 
-    public void sendMessage(ReceivedMessage message) {
-        messageSource.output().send(MessageBuilder.withPayload(message).build());
-    }
 }

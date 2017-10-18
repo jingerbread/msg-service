@@ -1,6 +1,7 @@
 package com.jingerbread.controllers;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.jingerbread.msg.Message;
 import com.jingerbread.msg.Messages;
@@ -18,29 +19,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+
 @Slf4j
 @RestController
 public class MessageController {
 
-    public static final String DATE_PATTERN = "dd-MM-yyyy";
-
-    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(DATE_PATTERN);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final JSONReader<Messages> jsonReader;
 
-    private final MessageOutputEventSource eventSource;
+    @Autowired
+    private MessageOutputEventSource eventSource;
 
     @Autowired
-    public MessageController(MessageOutputEventSource eventSource) {
+    public MessageController() {
         this.jsonReader = new JSONReader<>(Messages.class);
-        this.eventSource = eventSource;
     }
 
     @RequestMapping(value = "/api/v1/messages", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
@@ -67,7 +67,8 @@ public class MessageController {
 
         for (ReceivedMessage receivedMessage : receivedMessages) {
             try {
-                eventSource.sendMessage(receivedMessage);
+                String json = MAPPER.writeValueAsString(receivedMessage);
+                eventSource.sendText(json);
             } catch (Exception e) {
                 log.error("Can't send to kafka msg", e);
             }
@@ -114,9 +115,9 @@ public class MessageController {
         }
 
         try {
-            LocalDate.parse(value, dateFormat);
+            LocalDate.parse(value, ISO_LOCAL_DATE);
         } catch (Exception e) {
-            return Optional.of(new ValidationError(field, "date field should be in format " + DATE_PATTERN));
+            return Optional.of(new ValidationError(field, "date field should be in format " + ISO_LOCAL_DATE));
         }
         return Optional.empty();
     }

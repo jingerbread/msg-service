@@ -2,8 +2,11 @@ package com.jingerbread.msg;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class ReceivedMessage {
 
     @JsonProperty("message")
