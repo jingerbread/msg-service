@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -67,5 +68,15 @@ public class MessageParserTest {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         String responseJson = MAPPER.writeValueAsString(responseRoot);
         log.info("{}", responseJson);
+    }
+
+    @Test
+    public void testReceivedMessageSerialize() throws JsonProcessingException {
+        Message msg = new Message("Hello", "Hello World!", "Mike", "20.07.2017");
+        ReceivedMessage receivedMessage = new ReceivedMessage(msg, new Date());
+
+        String json = MAPPER.writeValueAsString(receivedMessage);
+        Assert.assertNotNull(json);
+        log.info("{}", json);
     }
 }

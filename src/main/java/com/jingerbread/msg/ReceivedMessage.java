@@ -1,16 +1,20 @@
 package com.jingerbread.msg;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 public class ReceivedMessage {
 
-    private final Message message;
+    @JsonProperty("message")
+    private Message message;
 
-    private final Date received;
+    @JsonProperty("received")
+    private Date received;
 
     public ReceivedMessage(Message message, Date received) {
         this.message = message;
         this.received = received;
     }
+
 }

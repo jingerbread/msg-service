@@ -11,6 +11,7 @@ import com.jingerbread.response.MessageValidationError;
 import com.jingerbread.response.OperationStatus;
 import com.jingerbread.response.ValidationError;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,8 +35,12 @@ public class MessageController {
 
     private final JSONReader<Messages> jsonReader;
 
-    public MessageController() {
+    private final MessageOutputEventSource eventSource;
+
+    @Autowired
+    public MessageController(MessageOutputEventSource eventSource) {
         this.jsonReader = new JSONReader<>(Messages.class);
+        this.eventSource = eventSource;
     }
 
     @RequestMapping(value = "/api/v1/messages", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
@@ -60,7 +65,13 @@ public class MessageController {
         List<ReceivedMessage> receivedMessages = messages.getValues().stream()
                 .map(m -> new ReceivedMessage(m, receivedDate)).collect(Collectors.toList());
 
-
+        for (ReceivedMessage receivedMessage : receivedMessages) {
+            try {
+                eventSource.sendMessage(receivedMessage);
+            } catch (Exception e) {
+                log.error("Can't send to kafka msg", e);
+            }
+        }
         return MessageResponseRoot.success();
     }
 

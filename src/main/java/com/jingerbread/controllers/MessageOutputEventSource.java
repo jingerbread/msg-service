@@ -1,5 +1,6 @@
 package com.jingerbread.controllers;
 
+import com.jingerbread.msg.ReceivedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
@@ -7,12 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableBinding(MessageSource.class)
-public class CustomOutputEventSource {
+public class MessageOutputEventSource {
 
     @Autowired
     private MessageSource messageSource;
 
-    public void sendMessage(String message) {
+    public void sendText(String message) {
+        messageSource.output().send(MessageBuilder.withPayload(message).build());
+    }
+
+    public void sendMessage(ReceivedMessage message) {
         messageSource.output().send(MessageBuilder.withPayload(message).build());
     }
 }
