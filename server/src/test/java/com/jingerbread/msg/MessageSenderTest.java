@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@TestPropertySource(locations = "classpath:test.properties")
+@TestPropertySource(locations = "src/test/resources/test.properties")
 @SpringBootTest
 public class MessageSenderTest {
 
