@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="msg-client" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.jingerbread.Application" />
+    <option name="VM_PARAMETERS" value="-Dlog4j.configuration=file:conf/log4j.properties -Dinstance.conf=file:src/main/resources/application.properties" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/client" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <module name="client" />
+    <envs />
+    <method>
+      <option name="Make" enabled="false" />
+    </method>
+  </configuration>
+</component>
