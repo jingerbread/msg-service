@@ -10,9 +10,16 @@ Test message
 # Start message server
 cd server
 mvn clean install -DskipTests=true
-mvn spring-boot:run -Dserver.port=8081 -Dinstance.conf=file:conf/msg-service.default.properties -Dlog4j.configuration=file:conf/log4j.properties
+mvn spring-boot:run -Dserver.port=8081 -Dinstance.conf=file:conf/server.default.properties -Dlog4j.configuration=file:conf/log4j.properties
+
+# Start message client
+cd client
+mvn clean install -DskipTests=true
+mvn spring-boot:run -Dinstance.conf=file:src/main/resources/application.properties -Dlog4j.configuration=file:conf/log4j.properties
+
 
 # Send some messages
 curl -H "Content-Type: application/json" -X POST -d '[{"title":"Hello","text":"Hello World!","author":"User","created":"2017-10-17"}]' http://localhost:8081/api/v1/messages
 # response
 # {"status":"SUCCESS","statusCode":0,"successful":true}
+
