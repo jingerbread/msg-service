@@ -19,7 +19,12 @@ cd server
 mvn clean install -DskipTests=true
 mvn spring-boot:run -Dserver.port=8081 -Dinstance.conf=file:conf/server.default.properties -Dlog4j.configuration=file:conf/log4j.properties
 ```
-
+# Create postgres db 'messages'
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/messages
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+```
 # Start message client
 ```bash
 cd client
