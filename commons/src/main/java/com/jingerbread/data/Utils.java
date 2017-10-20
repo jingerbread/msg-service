@@ -4,7 +4,6 @@ package com.jingerbread.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 
@@ -30,7 +29,7 @@ public class Utils {
     public static ReceivedMessage parse(String input) {
         try {
             return MAPPER.readValue(input, ReceivedMessage.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Can't read {} from json {}", ReceivedMessage.class, input, e);
         }
 

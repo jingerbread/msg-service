@@ -36,9 +36,12 @@ public class MessageEntity {
     private Date created;
 
     @Column(nullable = false)
-    private Date received;
+    private Date serverReceived;
 
-    public MessageEntity(ReceivedMessage message) {
+    @Column(nullable = false)
+    private Date clientReceived;
+
+    public MessageEntity(ReceivedMessage message, Date clientReceived) {
         Message msg = message.getMessage();
         this.author = msg.getAuthor();
         this.text = msg.getText();
@@ -47,6 +50,7 @@ public class MessageEntity {
         if (localDate != null) {
             this.created = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
-        this.received = message.getReceived();
+        this.serverReceived = message.getReceived();
+        this.clientReceived = clientReceived;
     }
 }

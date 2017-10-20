@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class Application {
 
     public static void main(String[] args) {
-        System.out.println("******* Server application started *******");
+        System.out.println("******* Server application started, listening on kafka topic 'msg_output' *******");
         SpringApplication.run(Application.class, args);
     }
 }
