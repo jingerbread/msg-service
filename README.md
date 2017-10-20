@@ -1,5 +1,6 @@
-# Start kafka with zookeper 
-# refer to [kafka quickstart](https://kafka.apache.org/quickstart)
+# Start kafka with zookeper, refer to [kafka quickstart](https://kafka.apache.org/quickstart)
+# Kafka should be started with default properties (zookeper port 2181, and etc)
+# refer to [Kafka Binder Properties](https://docs.spring.io/autorepo/docs/spring-cloud-stream-binder-kafka-docs/1.1.0.RELEASE/reference/html/_configuration_options.html#_kafka_binder_properties)
 
 # Create custom topic "msg_output":
 ```bash
