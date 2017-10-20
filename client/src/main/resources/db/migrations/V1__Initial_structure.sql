@@ -6,3 +6,5 @@ CREATE TABLE messages (
   created     TIMESTAMP NOT NULL,
   received    TIMESTAMP NOT NULL
 );
+
+CREATE SEQUENCE hibernate_sequence START WITH 1 INCREMENT BY 1 ;

@@ -1,6 +1,7 @@
 package com.jingerbread.data;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -15,7 +16,8 @@ public class ReceivedMessage {
     @JsonProperty("received")
     private Date received;
 
-    public ReceivedMessage(Message message, Date received) {
+    @JsonCreator
+    public ReceivedMessage(@JsonProperty("message") Message message, @JsonProperty("received") Date received) {
         this.message = message;
         this.received = received;
     }
