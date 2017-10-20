@@ -36,6 +36,16 @@ public class Utils {
         return null;
     }
 
+    public static String toString(ReceivedMessage input) {
+        try {
+            return MAPPER.writeValueAsString(input);
+        } catch (Exception e) {
+            log.error("Can't convert to json {}", input, e);
+        }
+
+        return null;
+    }
+
     public static String readMessage(Object input) {
         String message;
         if (input instanceof byte[]) {
