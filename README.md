@@ -13,7 +13,7 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic msg_outp
 # In console tab for kafka listener new message should appear
 Test message
 
-# Build project
+# Build project (skip tests if you haven't started kafka)
 mvn clean install -DskipTests=true
 
 # Start message server
