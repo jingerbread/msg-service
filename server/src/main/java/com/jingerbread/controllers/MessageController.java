@@ -11,6 +11,7 @@ import com.jingerbread.response.MessageResponseRoot;
 import com.jingerbread.response.MessageValidationError;
 import com.jingerbread.response.OperationStatus;
 import com.jingerbread.response.ValidationError;
+import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,13 +57,10 @@ public class MessageController {
     private MessageResponseRoot processMessages(@RequestBody String body) throws Exception {
         Messages messages = jsonReader.readJSON(body);
 
-        MessageResponseRoot validationResult = validateMessages(messages.getValues());
-        if (!validationResult.isSuccessful()) {
-            return validationResult;
-        }
+        Pair<MessageResponseRoot, List<Message>> validationResult = validateMessages(messages.getValues());
 
         Date receivedDate = new Date();//todo timezones
-        List<ReceivedMessage> receivedMessages = messages.getValues().stream()
+        List<ReceivedMessage> receivedMessages = validationResult.getValue().stream()
                 .map(m -> new ReceivedMessage(m, receivedDate)).collect(Collectors.toList());
 
         for (ReceivedMessage receivedMessage : receivedMessages) {
@@ -73,12 +71,13 @@ public class MessageController {
                 log.error("Can't send to kafka msg", e);
             }
         }
-        return MessageResponseRoot.success();
+        return validationResult.getKey();
     }
 
-    private MessageResponseRoot validateMessages(List<Message> messages) {
+    private Pair<MessageResponseRoot, List<Message>> validateMessages(List<Message> messages) {
         int messageId = 0;
         List<MessageValidationError> validationErrors = new LinkedList<>();
+        List<Message> correctMessages = new LinkedList<>();
 
         for (Message message : messages) {
             List<ValidationError> messageErrors = new LinkedList<>();
@@ -91,15 +90,17 @@ public class MessageController {
             if (!messageErrors.isEmpty()) {
                 MessageValidationError validationError = new MessageValidationError(messageId, messageErrors);
                 validationErrors.add(validationError);
+            } else {
+                correctMessages.add(message);
             }
             messageId++;
         }
 
         if (!validationErrors.isEmpty()) {
-            return MessageResponseRoot.validationError(OperationStatus.VALIDATION_ERROR, validationErrors);
+            return new Pair<>(MessageResponseRoot.validationError(OperationStatus.VALIDATION_ERROR, validationErrors), correctMessages);
         }
 
-        return MessageResponseRoot.success();
+        return new Pair<>(MessageResponseRoot.success(), correctMessages);
     }
 
     private Optional<ValidationError> validateField(String field, String value) {
