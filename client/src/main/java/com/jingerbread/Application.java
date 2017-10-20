@@ -1,6 +1,7 @@
 package com.jingerbread;
 
 import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -33,8 +34,16 @@ public class Application {
         dataSourceBuilder.username(username);
         dataSourceBuilder.password(password);
         dataSourceBuilder.driverClassName(driverClass);
+        DataSource dataSource = dataSourceBuilder.build();
 
-        return dataSourceBuilder.build();
+        Flyway flyway = new Flyway();
+        flyway.setLocations("db/migrations");
+        flyway.setDataSource(dataSource);
+        log.debug("Starting database migration...");
+        flyway.migrate();
+        log.debug("Database migration completed.");
+
+        return dataSource;
     }
 
     public static void main(String[] args) {
