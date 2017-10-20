@@ -3,10 +3,10 @@ package com.jingerbread.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.jingerbread.msg.Message;
-import com.jingerbread.msg.Messages;
-import com.jingerbread.msg.ReceivedMessage;
-import com.jingerbread.msg.utils.JSONReader;
+import com.jingerbread.data.JSONReader;
+import com.jingerbread.data.Message;
+import com.jingerbread.data.Messages;
+import com.jingerbread.data.ReceivedMessage;
 import com.jingerbread.response.MessageResponseRoot;
 import com.jingerbread.response.MessageValidationError;
 import com.jingerbread.response.OperationStatus;
@@ -114,11 +114,18 @@ public class MessageController {
             return Optional.of(new ValidationError(field, "field is empty"));
         }
 
-        try {
-            LocalDate.parse(value, ISO_LOCAL_DATE);
-        } catch (Exception e) {
+        if (parseDate(value)) {
             return Optional.of(new ValidationError(field, "date field should be in format " + ISO_LOCAL_DATE));
         }
         return Optional.empty();
+    }
+
+    private boolean parseDate(String value) {
+        try {
+            LocalDate.parse(value, ISO_LOCAL_DATE);
+        } catch (Exception e) {
+            return true;
+        }
+        return false;
     }
 }

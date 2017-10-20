@@ -1,10 +1,13 @@
-package com.jingerbread.msg;
+package com.jingerbread.data.msg;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jingerbread.controllers.MessageController;
-import com.jingerbread.msg.utils.JSONReader;
+import com.jingerbread.data.JSONReader;
+import com.jingerbread.data.Message;
+import com.jingerbread.data.Messages;
+import com.jingerbread.data.ReceivedMessage;
 import com.jingerbread.response.MessageResponseRoot;
 import com.jingerbread.response.MessageValidationError;
 import com.jingerbread.response.OperationStatus;

@@ -1,4 +1,4 @@
-package com.jingerbread.msg;
+package com.jingerbread.data;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;

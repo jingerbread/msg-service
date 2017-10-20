@@ -1,4 +1,4 @@
-package com.jingerbread.msg.utils;
+package com.jingerbread.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;

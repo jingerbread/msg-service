@@ -1,4 +1,4 @@
-package com.jingerbread.msg;
+package com.jingerbread.data.msg;
 
 import com.jingerbread.controllers.MessageOutputEventSource;
 import lombok.extern.slf4j.Slf4j;

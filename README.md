@@ -13,10 +13,12 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic msg_outp
 # In console tab for kafka listener new message should appear
 Test message
 
+# Build project
+mvn clean install -DskipTests=true
+
 # Start message server
 ```bash
 cd server
-mvn clean install -DskipTests=true
 mvn spring-boot:run -Dserver.port=8081 -Dinstance.conf=file:conf/server.default.properties -Dlog4j.configuration=file:conf/log4j.properties
 ```
 # Create postgres db 'messages'
@@ -28,7 +30,6 @@ spring.datasource.password=postgres
 # Start message client
 ```bash
 cd client
-mvn clean install -DskipTests=true
 mvn spring-boot:run -Dinstance.conf=file:src/main/resources/application.properties -Dlog4j.configuration=file:conf/log4j.properties
 ```
 
